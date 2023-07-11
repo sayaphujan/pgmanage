@@ -1,0 +1,139 @@
+<?
+//REFERRAL INFO
+$q = mysqli_query( $link, 'SELECT * FROM referrals WHERE id=\'' . sf( $_GET[ 'id' ] ) . '\'' );
+$r = mysqli_fetch_assoc( $q );
+
+//USER INFO
+$q = mysqli_query( $link, 'SELECT * FROM referral_users WHERE id=\'' . sf( $r[ 'referrer_id' ] ) . '\'' );
+$rf = mysqli_fetch_assoc( $q );
+?>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Referral #<?=$r['id']?></h2>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h3><u>Referral Info</u></h3>
+        <div class="text-capitalize">
+            <strong>Name:</strong>
+            <?=$r['name']?>
+        </div><br/>
+        <div class="text-capitalize">
+            <strong>Address:</strong><br/>
+            <?=$r['address']?>
+        </div><br/>
+        <div class="text-capitalize">
+            <strong>Email:</strong>
+            <?=$r['email']?>
+        </div><br/>
+        <div class="text-capitalize">
+            <strong>USPA License Number:</strong>
+            <?=$r['uspa']?>
+        </div><br/>
+        <div class="text-capitalize">
+            <strong>Contact Method:</strong>
+            <?=$r['contact_method']?>
+        </div><br/>
+        <div class="text-capitalize">
+            <strong>Contact Window:</strong>
+            <?=$r['contact_window']?>
+        </div><br />
+        <? if ($r['picture']!=='') { ?>
+        <h3><u>Photo</u></h3>
+        <a href="/referral/photos/<?=$r['id'].'.'.$r['picture']; ?>" target="_blank"><img class="img-thumbnail" src="/referral/photos/<?=$r['id'].'.'.$r['picture']; ?>"/></a><br/>
+        <? } ?>
+    </div>
+    <div class="col-md-4 col-md-offset-2">
+        <h3><u>Referrered By</u></h3>
+        <div class="text-capitalize">
+            <strong>Name:</strong>
+            <?=$rf['name']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>Address:</strong><br/>
+            <?=$rf['address']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>Email:</strong>
+            <?=$rf['email']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>Phone:</strong>
+            <?=$rf['phone']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>DZ:</strong>
+            <?=$rf['dz']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>USPA License Number:</strong>
+            <?=$rf['uspa']?>
+        </div>
+        <br/>
+        <div class="text-capitalize">
+            <strong>Preferred Payment Method:</strong>
+            <?=$rf['payment']?>
+        </div>
+    </div>
+    
+    <div class="clear"></div>
+<br/><br/><br/>
+<div id="data_table" style="width: 100vw;left: 0; position: absolute;">
+    <table class="table table-striped table-bordered table-hover dt-responsive nowrap no-footer" cellspacing="0" style="width:100%;">
+<tr>
+  <th width="5%"><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=id">ID</a> <?=($_GET['sort_by']=='id' ? '&#x25BC;' : '')?></th>
+	<th width="20%"><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=name">Product</a> <?=($_GET['sort_by']=='name' ? '&#x25BC;' : '')?></th>
+	<th width="15%"><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=customer_name">Client</a> <?=($_GET['sort_by']=='customer_name' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=serial">Serial</a> <?=($_GET['sort_by']=='serial' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=status">Status</a> <?=($_GET['sort_by']=='status' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=estimated_completion">Requested Completion</a> <?=($_GET['sort_by']=='estimated_completion' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=pod">Production Cycle</a> <?=($_GET['sort_by']=='pod' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&status=<?=$_GET['status']?>&sort_by=last_step">Current Step</a> <?=($_GET['sort_by']=='last_step' ? '&#x25BC;' : '')?></th>
+	<th><a href="?page=projects&design_id=<?=$_GET['design_id']?>&sort_by=design_id">Designer Project</a></th>
+</tr>
+
+<?
+if($_GET['search']) {
+	$search_sql = " AND (projects.name LIKE '%".sf($_GET['search'])."%' OR customers.name LIKE '%".sf($_GET['search'])."%' OR projects.serial LIKE '%".sf($_GET['search'])."%' OR projects.payment LIKE '%".sf($_GET['search'])."%' OR projects.notes LIKE '%".sf($_GET['search'])."%' OR projects.pod LIKE '%".sf($_GET['search'])."%' OR projects.colors LIKE '%".sf($_GET['search'])."%' OR projects.metadata LIKE '%".sf($_GET['search'])."%') OR projects.peregrine_id LIKE '%".sf($_GET['search'])."%')";
+}
+
+if(!isset($_GET['sort_by'])){
+    $_GET['sort_by'] = 'id';    
+}
+
+/*$query = 'SELECT projects.*, (SELECT product_steps.name FROM project_steps, product_steps WHERE project_steps.project=projects.id AND project_steps.status=\'Completed\' AND project_steps.step = product_steps.id ORDER BY product_steps.order DESC LIMIT 1) as last_status, customers.name as customer_name, products.name as product_name FROM projects LEFT JOIN customers ON projects.customer = customers.id LEFT JOIN referrals ON projects.id = referrals.project_id, products WHERE projects.product = products.id AND '.(!empty($_GET['status']) ? 'projects.status=\''.sf($_GET['status']).'\'' : 'projects.status!=\'deleted\'').(!empty($_GET['location']) ? ' AND projects.location=\''.sf($_GET['location']).'\'' : '').$search_sql.' AND referrals.id='.sf($_GET['id']).' ORDER BY '.sf($_GET['sort_by']).' ASC';*/
+$query = 'SELECT projects.*, (SELECT product_steps.name FROM project_steps, product_steps WHERE project_steps.project=projects.id AND project_steps.status=\'Completed\' AND project_steps.step = product_steps.id ORDER BY product_steps.order DESC LIMIT 1) as last_status, customers.name as customer_name, products.name as product_name FROM projects LEFT JOIN customers ON projects.customer = customers.id LEFT JOIN referrals ON projects.id = referrals.project_id, products WHERE projects.product = products.id '.$search_sql.' AND referrals.id='.sf($_GET['id']).' ORDER BY '.sf($_GET['sort_by']).' ASC';
+//echo $query;
+$q = mysqli_query($link, $query);
+
+
+if(!empty($_SESSION['new_projects'])) {
+	$highlight_new = true;
+}
+if(mysqli_num_rows($q)>0){
+while($row = mysqli_fetch_assoc($q)) {
+	echo '<tr>
+      <td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['id'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['product_name'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['customer_name'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['serial'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['status'].' '.((!empty($_SESSION['new_projects']) && strtotime($row['started'])>=strtotime($_SESSION['previous_login'])) ? ' (new)' : '').'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.date('Y-m-d', strtotime($row['estimated_completion'])).'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['pod'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&id='.$row['id'].'\'">'.$row['last_status'].'</td>
+			<td onclick="document.location=\''.root().'?page=project&design_id='.$row['peregrine_id'].'\'"><a target="_blank" href="https://design.peregrinemfginc.com/designer/?design_id='.$row['peregrine_id'].'">Go to Designer Project</a></td>
+		</tr>';
+}
+}
+?>
+
+</table>      
+</div>
+</div>

@@ -1,0 +1,10 @@
+RewriteEngine on
+RewriteBase /
+RewriteRule ^do/([^/.]+)/$ inc/exec.php?act=$1 [QSA,L]
+RewriteRule ^exec/([^/.]+)/$ inc/exec.php?act=$1 [QSA,L]
+RewriteRule ^page/([^/.]+)/$ ?p=$1 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/.]+)/?$ ?page=$1 [QSA,L]
+
+

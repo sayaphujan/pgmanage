@@ -1,0 +1,1 @@
+[11-Jul-2023 11:07:48 America/New_York] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/projectsndx/public_html/peregrinemanage/pages/engineering_messages.php on line 28

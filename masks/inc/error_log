@@ -1,0 +1,15 @@
+[01-May-2019 15:35:50 America/Chicago] PHP Fatal error:  Call to undefined function mysqil_result() in /home/pgmanage/public_html/referral/inc/exec.php on line 169
+[01-May-2019 15:36:57 America/Chicago] PHP Fatal error:  Call to undefined function mysqil_result() in /home/pgmanage/public_html/referral/inc/exec.php on line 175
+[01-May-2019 15:37:34 America/Chicago] PHP Fatal error:  Call to undefined function mysqil_result() in /home/pgmanage/public_html/referral/inc/exec.php on line 176
+[06-Apr-2020 15:37:34 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ']' in /home/pgmanage/public_html/masks/inc/exec.php on line 7
+[06-Apr-2020 15:38:01 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ']' in /home/pgmanage/public_html/masks/inc/exec.php on line 7
+[06-Apr-2020 15:38:07 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ']' in /home/pgmanage/public_html/masks/inc/exec.php on line 7
+[06-Apr-2020 15:44:58 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/pgmanage/public_html/masks/inc/exec.php on line 17
+[06-Apr-2020 15:51:08 UTC] PHP Parse error:  syntax error, unexpected ';', expecting ',' or ')' in /home/pgmanage/public_html/masks/inc/exec.php on line 48
+[06-Apr-2020 16:49:29 UTC] PHP Parse error:  syntax error, unexpected 'default' (T_DEFAULT) in /home/pgmanage/public_html/masks/inc/exec.php on line 94
+[06-Apr-2020 12:25:40 America/Chicago] PHP Deprecated:  mysql_query(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/pgmanage/public_html/masks/inc/exec.php on line 65
+[06-Apr-2020 12:25:40 America/Chicago] PHP Warning:  mysql_query(): Access denied for user ''@'localhost' (using password: NO) in /home/pgmanage/public_html/masks/inc/exec.php on line 65
+[06-Apr-2020 12:25:40 America/Chicago] PHP Warning:  mysql_query(): A link to the server could not be established in /home/pgmanage/public_html/masks/inc/exec.php on line 65
+[06-Apr-2020 12:25:40 America/Chicago] PHP Fatal error:  Call to undefined function get_default_email() in /home/pgmanage/public_html/masks/inc/functions.php on line 149
+[06-Apr-2020 12:26:40 America/Chicago] PHP Fatal error:  Call to undefined function get_default_email() in /home/pgmanage/public_html/masks/inc/functions.php on line 149
+[06-Apr-2020 20:13:38 America/Chicago] PHP Warning:  Invalid argument supplied for foreach() in /home/pgmanage/public_html/masks/inc/exec.php on line 59
